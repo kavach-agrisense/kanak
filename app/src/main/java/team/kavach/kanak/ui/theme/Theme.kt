@@ -21,17 +21,15 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xff98971a),
-    secondary = Color(0xff79740e),
-    tertiary = Color(0xffdde5c2),
-
-
-    surface = Color(0xfffbf1c7),
-    surfaceDim = Color(0xfff3eac7),
-    onSurfaceVariant = Color(0xff654735),
-    surfaceContainer = Color(0xfff9f5d7),
+    /*primary = Color(0xff56949f),
+    secondary = Color(0xff286983),
+    tertiary = Color(0xff907aa9),
+    surface = Color(0xfffaf4ed),
+    surfaceDim = Color(0xfff2e9e1),
+    onSurfaceVariant = Color(0xff797593),
+    surfaceContainer = Color(0xfffffaf3),
     onSurface = Color(0xff4f3829),
-    surfaceTint = Color(0xffe4edc8),
+    surfaceTint = Color(0xffe4edc8),*/
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
@@ -41,6 +39,8 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
     */
+    surface = Color.hsl(160f, 0.4f, 0.9f)
+
 )
 
 @Composable

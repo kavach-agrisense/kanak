@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Chat
 import androidx.compose.material.icons.rounded.Call
+import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -32,7 +34,7 @@ fun ChatButton(expanded : Boolean = true) {
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier.padding(10.dp)
     ) {
-        Icon(Icons.Rounded.Call, null, Modifier.size(30.dp))
+        Icon(Icons.AutoMirrored.Rounded.Chat, null, Modifier.size(30.dp))
         Spacer(Modifier.width(10.dp))
         if (expanded) {
             Text("Ask AI", fontSize = 22.sp, fontFamily = DMSansFontFamily)

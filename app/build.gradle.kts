@@ -95,4 +95,7 @@ dependencies {
 
     // Shapes
     implementation(libs.graphics.shapes)
+
+    // Nav compose
+    implementation(libs.androidx.navigation.compose)
 }

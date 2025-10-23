@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.SupervisedUserCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,12 +20,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import team.kavach.kanak.NavBar.NavBar
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import team.kavach.kanak.Navigation.NavBar
+import team.kavach.kanak.Navigation.Screen
+import team.kavach.kanak.Weather.WeatherScreen
+import team.kavach.kanak.ui.popSlideFadeIn
+import team.kavach.kanak.ui.popSlideFadeOut
+import team.kavach.kanak.ui.slideFadeIn
+import team.kavach.kanak.ui.slideFadeOut
 import team.kavach.kanak.ui.theme.ApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,20 +55,58 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
+
+    val homeScrollState = rememberScrollState();
+    val farmScrollState = rememberScrollState();
+    val alertScrollState = rememberScrollState();
+    val weatherScrollState = rememberScrollState();
+
+    val mainNavController = rememberNavController();
+
+    val navBackStackEntry by mainNavController.currentBackStackEntryAsState();
+
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            NavBar()
-        },
-        floatingActionButton = {
-            ChatButton()
         },
         topBar = {
             TopBar()
         }
     ) { innerPadding ->
-        HomeScreen(modifier = Modifier.padding(innerPadding))
+        Box(
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            NavHost(
+                mainNavController, startDestination = Screen.Home.route,
+                enterTransition = { slideFadeIn() },
+                exitTransition = { slideFadeOut() },
+                popEnterTransition = { popSlideFadeIn() },
+                popExitTransition = { popSlideFadeOut() }
+            ) {
+                composable(Screen.Home.route) {
+                    HomeScreen(modifier = Modifier.padding(innerPadding), scrollState = homeScrollState)
+                }
+                composable (Screen.Alert.route) {
+                    AlertScreen(alertScrollState, modifier = Modifier.padding(innerPadding))
+                }
+                composable (Screen.Weather.route) {
+                    WeatherScreen(weatherScrollState, modifier = Modifier.padding(innerPadding))
+                }
+                composable (Screen.Farm.route) {
+
+                }
+            }
+            NavBar(
+                scrollState = when (navBackStackEntry?.destination?.route) {
+                    Screen.Home.route -> homeScrollState
+                    Screen.Alert.route -> alertScrollState
+                    Screen.Weather.route -> weatherScrollState
+                    else -> rememberScrollState()
+                },
+                navController = mainNavController
+            )
+        }
     }
 }
 
@@ -84,6 +136,6 @@ fun TopBar (){
             Text("Kanak")
             Icon(Icons.Rounded.SupervisedUserCircle, null)
         }
-
-    })
+    },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background))
 }

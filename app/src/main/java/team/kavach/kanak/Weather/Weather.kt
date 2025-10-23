@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import team.kavach.kanak.R;
+import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable
 fun WeatherRow(viewModel : WeatherViewModel) {
@@ -65,15 +66,13 @@ fun TemperatureCard(viewModel : WeatherViewModel = viewModel()) {
         modifier = Modifier.height(270.dp).fillMaxWidth().padding(5.dp, 10.dp),
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.hsl(160f, 0.4f, 0.97f),
-            contentColor = Color.hsl(160f, 0.4f, 0.1f)
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         border = BorderStroke(
             1.dp,
-            Brush.verticalGradient(listOf(
-                Color.hsl(160f, 0.4f, 1f),
-                Color.hsl(160f, 0.4f, 0.95f)
-            ))),
+            verticalGradientBrush()
+        ),
         elevation = CardDefaults.elevatedCardElevation(4.dp),
     ) {
         when {
@@ -115,7 +114,6 @@ fun FetchingWeather () {
 
 @Composable
 fun FetchedWeatherInfo(weatherInfo: WeatherInfo) {
-    Log.e("BRO IMAGE", "https:${weatherInfo.current.condition.icon}")
     val icons = listOf(Icons.Rounded.WaterDrop, Icons.Rounded.Air, Icons.Rounded.Thunderstorm);
     val entities = listOf("Humidity", "Wind", "Precipitation");
     val values = listOf(
@@ -149,7 +147,7 @@ fun FetchedWeatherInfo(weatherInfo: WeatherInfo) {
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(weatherInfo.current.condition.text, color = Color.hsl(160f, 0.4f, 0.1f))
+                Text(weatherInfo.current.condition.text, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
         Row (

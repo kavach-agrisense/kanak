@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.toursafe.ui.theme.DMSansFontFamily
 import team.kavach.kanak.R
+import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable
 fun ScannerCard() {
@@ -44,16 +45,9 @@ fun ScannerCard() {
         elevation = CardDefaults.elevatedCardElevation(4.dp),
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.hsl(160f, 0.4f, 0.95f),
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
-        border = BorderStroke(
-            1.dp, Brush.verticalGradient(
-                listOf(
-                    Color.hsl(0f, 0f, 1.0f),
-                    Color.hsl(0f, 0f, 0.9f),
-                )
-            )
-        ),
+        border = BorderStroke(1.dp, verticalGradientBrush()),
     ) {
         Column(
             Modifier
@@ -65,7 +59,7 @@ fun ScannerCard() {
                 " Crop Health",
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.hsl(160f, 0.4f, 0.05f)
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(Modifier.height(5.dp))
             Row(
@@ -84,7 +78,7 @@ fun ScannerCard() {
                         "Click a photo",
                         modifier = Modifier.fillMaxWidth().height(35.dp),
                         textAlign = TextAlign.Center,
-                        color = Color.hsl(160f, 0.4f, 0.15f),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 14.sp
                     )
                 }
@@ -105,7 +99,7 @@ fun ScannerCard() {
                         modifier = Modifier.fillMaxWidth().height(35.dp),
                         textAlign = TextAlign.Center,
                         lineHeight = TextUnit(14f, TextUnitType.Sp),
-                        color = Color.hsl(160f, 0.4f, 0.15f),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 14.sp
                     )
                 }
@@ -117,17 +111,10 @@ fun ScannerCard() {
                     .padding()
                     .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.hsl(160f, 0.4f, 1f)
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer
                 ),
                 shape = RoundedCornerShape(22.dp),
-                border = BorderStroke(
-                    1.dp, Brush.verticalGradient(
-                        listOf(
-                            Color.hsl(0f, 0f, 1.0f),
-                            Color.hsl(0f, 0f, 0.9f),
-                        )
-                    )
-                ),
+                border = BorderStroke(1.dp, verticalGradientBrush()),
                 elevation = ButtonDefaults.buttonElevation(
                     4.dp
                 )

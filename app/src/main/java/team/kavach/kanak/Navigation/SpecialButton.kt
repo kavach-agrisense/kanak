@@ -59,7 +59,7 @@ fun SpecialButton(onClick: () -> Unit, active: Boolean) {
         Button(
             onClick,
             shape = CircleShape,
-            modifier = Modifier.size(45.dp + 35.dp * onActive),
+            modifier = Modifier.size(40.dp + 40.dp * onActive),
             elevation = ButtonDefaults.buttonElevation(3.dp * onActive),
             colors = ButtonDefaults.buttonColors(
                 containerColor = animatedColor.value

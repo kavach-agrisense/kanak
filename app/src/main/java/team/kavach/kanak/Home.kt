@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import team.kavach.kanak.Prices.PriceCard
 import team.kavach.kanak.Scanner.ScannerCard
 import team.kavach.kanak.Weather.TemperatureCard
 
@@ -25,8 +26,7 @@ fun HomeScreen(
     ) {
         TemperatureCard()
         ScannerCard()
-        ScannerCard()
-        ScannerCard()
+        PriceCard()
     }
 }
 

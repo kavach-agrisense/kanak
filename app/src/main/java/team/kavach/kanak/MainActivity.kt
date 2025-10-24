@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.SupervisedUserCircle
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.toursafe.ui.theme.DMSansFontFamily
 import team.kavach.kanak.Navigation.NavBar
 import team.kavach.kanak.Navigation.Screen
 import team.kavach.kanak.Weather.WeatherScreen
@@ -133,7 +135,7 @@ fun TopBar (){
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.padding(horizontal = 20.dp).fillMaxWidth()
         ){
-            Text("Kanak")
+            Text("Kanak", fontFamily = DMSansFontFamily)
             Icon(Icons.Rounded.SupervisedUserCircle, null)
         }
     },

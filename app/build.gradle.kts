@@ -98,4 +98,9 @@ dependencies {
 
     // Nav compose
     implementation(libs.androidx.navigation.compose)
+
+
+    // Room DB
+    // implementation(libs.androidx.room.compiler)
+    // Annotation for Room
 }

@@ -117,7 +117,10 @@ fun NavBar(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 ),
                 elevation = CardDefaults.elevatedCardElevation(20.dp),
-                border = BorderStroke(1.5.dp, verticalGradientBrush())
+                border = BorderStroke(1.5.dp, Brush.verticalGradient(listOf(
+                    MaterialTheme.colorScheme.surfaceContainer,
+                    MaterialTheme.colorScheme.surfaceContainerLow,
+                )))
             ) {
                 Row(Modifier
                     .padding(horizontal = 10.dp)

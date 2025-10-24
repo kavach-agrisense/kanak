@@ -1,5 +1,5 @@
 package team.kavach.kanak.Weather.Forecast
 
-data class ForecastX(
+data class Forecast(
     val forecastday: List<Forecastday>
 )

@@ -5,5 +5,6 @@ data class Hour(
     val condition: Condition,
     val humidity: Int,
     val temp_c: Double,
-    val time_epoch: Int
+    val time_epoch: Int,
+    val is_day : Int
 )

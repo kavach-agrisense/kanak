@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.SupervisedUserCircle
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.toursafe.ui.theme.DMSansFontFamily
 import team.kavach.kanak.Navigation.NavBar
 import team.kavach.kanak.Navigation.Screen
-import team.kavach.kanak.Weather.WeatherScreen
+import team.kavach.kanak.Weather.Forecast.ForecastScreen
 import team.kavach.kanak.ui.popSlideFadeIn
 import team.kavach.kanak.ui.popSlideFadeOut
 import team.kavach.kanak.ui.slideFadeIn
@@ -80,7 +79,7 @@ fun MainScreen() {
             contentAlignment = Alignment.BottomCenter
         ) {
             NavHost(
-                mainNavController, startDestination = Screen.Home.route,
+                mainNavController, startDestination = Screen.Weather.route,
                 enterTransition = { slideFadeIn() },
                 exitTransition = { slideFadeOut() },
                 popEnterTransition = { popSlideFadeIn() },
@@ -93,10 +92,10 @@ fun MainScreen() {
                     AlertScreen(alertScrollState, modifier = Modifier.padding(innerPadding))
                 }
                 composable (Screen.Weather.route) {
-                    WeatherScreen(weatherScrollState, modifier = Modifier.padding(innerPadding))
+                    ForecastScreen(Modifier.padding(innerPadding), farmScrollState)
                 }
                 composable (Screen.Farm.route) {
-
+                    FarmScreen(modifier = Modifier.padding(innerPadding), farmScrollState)
                 }
             }
             NavBar(

@@ -12,3 +12,11 @@ fun verticalGradientBrush() : Brush {
         MaterialTheme.colorScheme.surface
     ))
 }
+
+@Composable
+fun inverseVerticalGradientBrush() : Brush {
+    return Brush.verticalGradient(listOf(
+        MaterialTheme.colorScheme.surface,
+        MaterialTheme.colorScheme.surfaceContainer,
+    ))
+}

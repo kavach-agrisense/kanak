@@ -35,7 +35,7 @@ class WeatherViewModel : ViewModel() {
                 delay(60 * 1000L)
             }
 
-            while (isActive) {
+            /*while (isActive) {
                 try {
                     val response = RetrofitInstance.getApiService().getWeatherInfo(
                         BuildConfig.WEATHER_API_KEY,
@@ -46,7 +46,7 @@ class WeatherViewModel : ViewModel() {
                 } catch (e : Exception) {
 
                 }
-            }
+            }*/
         }
     }
 }

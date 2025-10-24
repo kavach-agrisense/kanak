@@ -9,5 +9,5 @@ data class Current(
     val precip_mm: Int,
     val temp_c: Double,
     val wind_dir: String,
-    val wind_kph: Int
+    val wind_kph: Float
 )

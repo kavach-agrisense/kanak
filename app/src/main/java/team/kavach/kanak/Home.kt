@@ -4,7 +4,9 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,6 +29,7 @@ fun HomeScreen(
         TemperatureCard()
         ScannerCard()
         PriceCard()
+        Spacer(Modifier.height(100.dp))
     }
 }
 

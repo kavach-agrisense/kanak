@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.toursafe.ui.theme.DMSansFontFamily
 import team.kavach.kanak.R
+import team.kavach.kanak.ui.theme.DMSansFontFamily
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable

@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.toursafe.ui.theme.DMSansFontFamily
+import team.kavach.kanak.ui.theme.DMSansFontFamily
 
 @Composable
 fun ChatButton(expanded : Boolean = true) {

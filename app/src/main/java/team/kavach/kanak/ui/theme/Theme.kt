@@ -6,7 +6,6 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.example.toursafe.ui.theme.Typography
 
 private const val saturationDark = 0.1f
 private val DarkColorScheme = darkColorScheme(

@@ -45,22 +45,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import team.kavach.kanak.Navigation.Screen
 import team.kavach.kanak.R;
+import team.kavach.kanak.Weather.Forecast.ForecastInfo
+import team.kavach.kanak.Weather.Forecast.ForecastViewModel
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable
-fun WeatherRow(viewModel : WeatherViewModel) {
+fun WeatherRow(viewModel : ForecastViewModel) {
     val componentList = listOf(TemperatureCard(viewModel), )
 }
 
 @Composable
-fun TemperatureCard(viewModel : WeatherViewModel = viewModel()) {
+fun TemperatureCard(viewModel : ForecastViewModel = viewModel(), navController: NavController = rememberNavController()) {
 
-    val weatherInfo = viewModel.weatherInfo.value;
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchWeatherInfo()
-    }
+    val weatherInfo = viewModel.forecastInfo.value;
 
     Card (
         modifier = Modifier.height(270.dp).fillMaxWidth().padding(5.dp, 10.dp),
@@ -73,6 +74,9 @@ fun TemperatureCard(viewModel : WeatherViewModel = viewModel()) {
             1.dp,
             verticalGradientBrush()
         ),
+        onClick = {
+            navController.navigate(Screen.Weather.route)
+        },
         elevation = CardDefaults.elevatedCardElevation(4.dp),
     ) {
         when {
@@ -81,19 +85,6 @@ fun TemperatureCard(viewModel : WeatherViewModel = viewModel()) {
             } else -> {
                 FetchedWeatherInfo(weatherInfo)
             }
-        }
-    }
-}
-
-
-@Composable
-fun HumidityCard(weatherInfo: WeatherInfo) {
-    Card {
-        Row {
-            Icon(
-                Icons.Outlined.WaterDrop,
-                "Humidity"
-            );
         }
     }
 }
@@ -113,7 +104,7 @@ fun FetchingWeather () {
 }
 
 @Composable
-fun FetchedWeatherInfo(weatherInfo: WeatherInfo) {
+fun FetchedWeatherInfo(weatherInfo: ForecastInfo) {
     val icons = listOf(Icons.Rounded.WaterDrop, Icons.Rounded.Air, Icons.Rounded.Thunderstorm);
     val entities = listOf("Humidity", "Wind", "Precipitation");
     val values = listOf(
@@ -128,26 +119,39 @@ fun FetchedWeatherInfo(weatherInfo: WeatherInfo) {
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Row (
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth().padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
             ){
-            Image(
-                painter = painterResource(weatherInfo.icon()),
-                null,
-                modifier = Modifier.size(50.dp)
-            )
-            Spacer(Modifier.width(20.dp))
-            Column (horizontalAlignment = Alignment.Start){
-                Text (
-                    "${weatherInfo.current.temp_c}°C",
-                    fontSize = 28.sp,
+            Column {
+                Text(
+                    weatherInfo.location.name,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold,
-                    softWrap = false,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    )
+                Text(weatherInfo.location.region)
+            }
+            Row () {
+                Image(
+                    painter = painterResource(weatherInfo.icon()),
+                    null,
+                    modifier = Modifier.size(50.dp)
                 )
-                Text(weatherInfo.current.condition.text, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(Modifier.width(20.dp))
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(
+                        "${weatherInfo.current.temp_c}°C",
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        softWrap = false,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        weatherInfo.current.condition.text,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
         Row (

@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.toursafe.ui.theme.DMSansFontFamily
+import team.kavach.kanak.ui.theme.DMSansFontFamily
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable

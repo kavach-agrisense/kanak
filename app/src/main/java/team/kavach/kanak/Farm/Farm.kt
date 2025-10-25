@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
-import com.example.toursafe.ui.theme.DMSansFontFamily
+import team.kavach.kanak.ui.theme.DMSansFontFamily
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 val exampleFieldPoints = listOf<Pair<Float,Float>>(

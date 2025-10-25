@@ -1,10 +1,14 @@
 package team.kavach.kanak.Weather.Forecast
 
+import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import team.kavach.kanak.BuildConfig
 import team.kavach.kanak.RetrofitInstance
@@ -30,4 +34,16 @@ class ForecastViewModel : ViewModel() {
             }
         }
     }
+
+}
+
+@Composable
+fun fetchAndReturnForecastViewModel() : ForecastViewModel {
+    val forecastViewModel : ForecastViewModel = viewModel();
+
+    LaunchedEffect(Unit) {
+        forecastViewModel.fetchWeatherForecast()
+    }
+
+    return forecastViewModel;
 }

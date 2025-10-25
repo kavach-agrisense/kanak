@@ -1,5 +1,8 @@
 package team.kavach.kanak.Weather.Forecast
 
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.EaseOutBack
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -37,11 +40,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.toursafe.ui.theme.DMSansFontFamily
 import com.google.gson.Gson
 import team.kavach.kanak.Prices.PriceItem
 import team.kavach.kanak.Prices.Separator
 import team.kavach.kanak.Prices.UnitKnob
+import team.kavach.kanak.ui.theme.DMSansFontFamily
 import team.kavach.kanak.ui.theme.inverseVerticalGradientBrush
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 import java.time.Instant
@@ -59,15 +62,11 @@ fun ForecastScreen(modifier: Modifier, scrollState: ScrollState, viewModel: Fore
 
     val forecastInfo = viewModel.forecastInfo.value;
 
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchWeatherForecast()
-    }
     Column (
         modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 10.dp).padding(bottom = 100.dp)
     ){
         when {
             forecastInfo == null -> {
@@ -85,14 +84,19 @@ fun ForecastScreen(modifier: Modifier, scrollState: ScrollState, viewModel: Fore
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ){
                         Text(
-                            "Today Forecast",
+                            "Today's Forecast",
                             fontFamily = DMSansFontFamily,
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 25.dp)
                         )
-                        HourRow(forecastInfo, Modifier.horizontalScroll(rememberScrollState()))
 
+                        val rowScrollState = rememberScrollState();
+                        HourRow(forecastInfo, Modifier.horizontalScroll(rowScrollState))
+                        ColorIndicators()
+                        ScrollToCurrentHour(rowScrollState, forecastInfo.forecast.forecastday[0].hour)
                     }
                 }
             ForecastDayCard(forecastInfo.forecast.forecastday)
@@ -104,10 +108,74 @@ fun ForecastScreen(modifier: Modifier, scrollState: ScrollState, viewModel: Fore
 
 
 @Composable
+fun ColorIndicators() {
+    Row (
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            Card (
+                modifier = Modifier.size(10.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+            ){  }
+            Text("Temp",
+                fontSize = 12.sp
+            )
+        }
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            Card (
+                modifier = Modifier.size(10.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
+            ){  }
+            Text(
+                "Humidity",
+                fontSize = 14.sp
+            )
+        }
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            Card (
+                modifier = Modifier.size(10.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
+            ){  }
+            Text(
+                "Precipitation",
+                fontSize = 14.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun ScrollToCurrentHour(scrollState : ScrollState, hours : List<Hour>) {
+    for (i in 0 until hours.size) {
+        if (isCurrentHour(hours[i].time_epoch)) {
+            LaunchedEffect(Unit) {
+                scrollState.animateScrollTo(
+                    value = scrollState.maxValue * i / 24 + scrollState.viewportSize / 2,
+                    tween(250, 0, EaseOut)
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun HourRow (forecastInfo: ForecastInfo, modifier : Modifier = Modifier) {
     val hourList = (0 until 24).toList();
 
-    Row (modifier.fillMaxWidth().padding(vertical = 10.dp)){
+    Row (modifier
+        .fillMaxWidth()
+        .padding(vertical = 10.dp)){
 
         Spacer(Modifier.width(20.dp))
 
@@ -196,7 +264,9 @@ fun ForecastDayCard(forcastDayList : List<Forecastday> = dummyForecastInfo.forec
             containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(30.dp),
-        modifier = Modifier.fillMaxWidth().padding(5.dp, 10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp, 10.dp),
         border = BorderStroke(1.dp, verticalGradientBrush())
     ) {
         Column (
@@ -209,7 +279,7 @@ fun ForecastDayCard(forcastDayList : List<Forecastday> = dummyForecastInfo.forec
                 fontWeight = FontWeight.Bold,
                 fontFamily = DMSansFontFamily,
             )
-
+            Spacer(Modifier.height(10.dp))
             for (i in 0 until forcastDayList.size) {
                 val day = forcastDayList[i].day;
                 Row  (
@@ -225,7 +295,8 @@ fun ForecastDayCard(forcastDayList : List<Forecastday> = dummyForecastInfo.forec
                         )
                         Text(
                             "${day.avgtemp_c.roundToInt()}°C",
-                            fontSize = 26.sp
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
                     Spacer(Modifier.width(10.dp))
@@ -239,7 +310,7 @@ fun ForecastDayCard(forcastDayList : List<Forecastday> = dummyForecastInfo.forec
                         )
                         Text(
                             "${day.avghumidity}%",
-                            fontWeight = FontWeight.SemiBold,
+                            fontWeight = FontWeight.Medium,
                             fontSize = 20.sp
                         )
 
@@ -254,7 +325,7 @@ fun ForecastDayCard(forcastDayList : List<Forecastday> = dummyForecastInfo.forec
                         )
                         Text(
                             "${day.daily_chance_of_rain}%",
-                            fontWeight = FontWeight.SemiBold,
+                            fontWeight = FontWeight.Medium,
                             fontSize = 20.sp
                         )
                     }
@@ -295,7 +366,9 @@ fun isCurrentHour(timeEpoch: Int): Boolean {
 @Composable
 fun HourRowPreview() {
     Box(Modifier.background(MaterialTheme.colorScheme.background)) {
-        HourRow(dummyForecastInfo, Modifier.horizontalScroll(rememberScrollState()).padding(20.dp))
+        HourRow(dummyForecastInfo, Modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(20.dp))
     }
 
 }

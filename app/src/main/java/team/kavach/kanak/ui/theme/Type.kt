@@ -1,4 +1,4 @@
-package com.example.toursafe.ui.theme
+package team.kavach.kanak.ui.theme
 
 import team.kavach.kanak.R;
 import androidx.compose.material3.Typography

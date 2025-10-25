@@ -22,25 +22,29 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.toursafe.ui.theme.DMSansFontFamily
 import team.kavach.kanak.Navigation.NavBar
 import team.kavach.kanak.Navigation.Screen
 import team.kavach.kanak.Weather.Forecast.ForecastScreen
+import team.kavach.kanak.Weather.Forecast.ForecastViewModel
+import team.kavach.kanak.Weather.Forecast.fetchAndReturnForecastViewModel
 import team.kavach.kanak.ui.popSlideFadeIn
 import team.kavach.kanak.ui.popSlideFadeOut
 import team.kavach.kanak.ui.slideFadeIn
 import team.kavach.kanak.ui.slideFadeOut
 import team.kavach.kanak.ui.theme.ApplicationTheme
+import team.kavach.kanak.ui.theme.DMSansFontFamily
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +70,8 @@ fun MainScreen() {
 
     val navBackStackEntry by mainNavController.currentBackStackEntryAsState();
 
+    val forecastViewModel = fetchAndReturnForecastViewModel();
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
@@ -79,20 +85,20 @@ fun MainScreen() {
             contentAlignment = Alignment.BottomCenter
         ) {
             NavHost(
-                mainNavController, startDestination = Screen.Weather.route,
+                mainNavController, startDestination = Screen.Home.route,
                 enterTransition = { slideFadeIn() },
                 exitTransition = { slideFadeOut() },
                 popEnterTransition = { popSlideFadeIn() },
                 popExitTransition = { popSlideFadeOut() }
             ) {
                 composable(Screen.Home.route) {
-                    HomeScreen(modifier = Modifier.padding(innerPadding), scrollState = homeScrollState)
+                    HomeScreen(modifier = Modifier.padding(innerPadding), scrollState = homeScrollState, forecastViewModel)
                 }
                 composable (Screen.Alert.route) {
                     AlertScreen(alertScrollState, modifier = Modifier.padding(innerPadding))
                 }
                 composable (Screen.Weather.route) {
-                    ForecastScreen(Modifier.padding(innerPadding), farmScrollState)
+                    ForecastScreen(Modifier.padding(innerPadding), weatherScrollState, forecastViewModel,)
                 }
                 composable (Screen.Farm.route) {
                     FarmScreen(modifier = Modifier.padding(innerPadding), farmScrollState)

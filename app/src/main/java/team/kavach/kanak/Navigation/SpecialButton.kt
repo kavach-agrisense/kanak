@@ -22,7 +22,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,13 +38,13 @@ import team.kavach.kanak.R
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable
-fun SpecialButton(onClick: () -> Unit, active: Boolean) {
+fun SpecialButton(onClick: () -> Unit, active: MutableState<Boolean>) {
     val onActive by animateFloatAsState(
-        if (active) 1f else 0f,
+        if (!active.value) 1f else 0f,
         tween(250, 0, EaseOutBack)
     )
     val animatedColor = animateColorAsState(
-        targetValue = if (active) {
+        targetValue = if (!active.value) {
             MaterialTheme.colorScheme.surfaceContainer
         } else {
             MaterialTheme.colorScheme.surfaceContainerLow
@@ -49,7 +52,7 @@ fun SpecialButton(onClick: () -> Unit, active: Boolean) {
         animationSpec = tween(250, 0, EaseOutBack)
     )
     val animatedNonZero = animateFloatAsState(
-        if (active) 1f else 0f,
+        if (!active.value) 1f else 0f,
         tween(250, 0, EaseOut)
     )
 
@@ -57,19 +60,22 @@ fun SpecialButton(onClick: () -> Unit, active: Boolean) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick,
+            onClick = {
+                active.value = false
+                onClick
+            },
             shape = CircleShape,
             modifier = Modifier.size(40.dp + 40.dp * onActive),
             elevation = ButtonDefaults.buttonElevation(3.dp * onActive),
             colors = ButtonDefaults.buttonColors(
                 containerColor = animatedColor.value
             ),
-            border = if (active) BorderStroke(1.dp, verticalGradientBrush()) else null,
+            border = if (!active.value) BorderStroke(1.5.dp, verticalGradientBrush()) else null,
             contentPadding = PaddingValues(5.dp * animatedNonZero.value)
         ) {
             Image(
                 painterResource(
-                    if (active) R.drawable.robo
+                    if (!active.value) R.drawable.robo
                     else if (isSystemInDarkTheme()) R.drawable.robo_material_dark
                     else R.drawable.robo_material),
                 null,
@@ -77,9 +83,9 @@ fun SpecialButton(onClick: () -> Unit, active: Boolean) {
         }
         Spacer(Modifier.height(20.dp * onActive))
         Text(
-            if (active) "Need Help?" else "Ask Ai",
+            if (!active.value) "Need Help?" else "Ask Ai",
             fontSize = (12 + 2 * onActive).sp,
-            fontWeight = if (active) FontWeight.Normal else FontWeight.Light,
+            fontWeight = if (!active.value) FontWeight.Normal else FontWeight.Light,
             modifier = Modifier.padding(bottom = 10.dp),
         )
     }
@@ -93,6 +99,6 @@ fun SpecialButtonPreview() {
         .background(Color.hsl(160f, 0.4f, 0.9f)),
         contentAlignment = Alignment.Center
     ){
-        SpecialButton({}, true)
+        SpecialButton({}, remember { mutableStateOf(true) })
     }
 }

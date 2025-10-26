@@ -1,17 +1,15 @@
 package team.kavach.kanak.Weather.Forecast
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.HelpOutline
-import androidx.compose.material.icons.rounded.AcUnit
-import androidx.compose.material.icons.rounded.Air
-import androidx.compose.material.icons.rounded.Cloud
-import androidx.compose.material.icons.rounded.Grain
-import androidx.compose.material.icons.rounded.HelpOutline
-import androidx.compose.material.icons.rounded.Nightlight
-import androidx.compose.material.icons.rounded.NightsStay
-import androidx.compose.material.icons.rounded.Shower
-import androidx.compose.material.icons.rounded.Thunderstorm
-import androidx.compose.material.icons.rounded.WbSunny
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.AcUnit
+import androidx.compose.material.icons.outlined.Air
+import androidx.compose.material.icons.outlined.Cloud
+import androidx.compose.material.icons.outlined.Nightlight
+import androidx.compose.material.icons.outlined.NightsStay
+import androidx.compose.material.icons.outlined.Shower
+import androidx.compose.material.icons.outlined.Thunderstorm
+import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.ui.graphics.vector.ImageVector
 import team.kavach.kanak.R
 
@@ -55,35 +53,35 @@ data class ForecastInfo(
 
         return when (forecast.forecastday[0].hour[hour].condition.code) {
             // ☀️ Clear / Sunny
-            1000 -> if (isDaytime) Icons.Rounded.WbSunny else Icons.Rounded.NightsStay
+            1000 -> if (isDaytime) Icons.Outlined.WbSunny else Icons.Outlined.NightsStay
 
             // 🌤️ Partly cloudy
-            1003 -> if (isDaytime) Icons.Rounded.Cloud else Icons.Rounded.Nightlight
+            1003 -> if (isDaytime) Icons.Outlined.Cloud else Icons.Outlined.Nightlight
 
             // ☁️ Cloudy / overcast
-            1006, 1009 -> Icons.Rounded.Cloud
+            1006, 1009 -> Icons.Outlined.Cloud
 
             // 🌫️ Mist / Fog
-            1030, 1135, 1147 -> Icons.Rounded.Air
+            1030, 1135, 1147 -> Icons.Outlined.Air
 
             // 🌧️ Light rain / drizzle
             1063, 1072, 1150, 1153, 1168, 1171, 1180, 1183 ->
-                Icons.Rounded.Shower
+                Icons.Outlined.Shower
 
             // 🌦️ Moderate / heavy rain
             1186, 1189, 1192, 1195, 1240, 1243, 1246 ->
-                Icons.Rounded.Thunderstorm
+                Icons.Outlined.Thunderstorm
 
             // 🌨️ Snow / sleet
             1066, 1114, 1117, 1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258 ->
-                Icons.Rounded.AcUnit
+                Icons.Outlined.AcUnit
 
             // ⛈️ Thunderstorm
             1087, 1273, 1276, 1279, 1282 ->
-                Icons.Rounded.Thunderstorm
+                Icons.Outlined.Thunderstorm
 
             // 🌪️ Other / unknown
-            else -> Icons.AutoMirrored.Rounded.HelpOutline
+            else -> Icons.AutoMirrored.Outlined.HelpOutline
         }
     }
 

@@ -22,22 +22,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import team.kavach.kanak.Navigation.NavBar
 import team.kavach.kanak.Navigation.Screen
-import team.kavach.kanak.Weather.Forecast.ForecastScreen
-import team.kavach.kanak.Weather.Forecast.ForecastViewModel
+import team.kavach.kanak.Weather.ForecastScreen
 import team.kavach.kanak.Weather.Forecast.fetchAndReturnForecastViewModel
 import team.kavach.kanak.ui.popSlideFadeIn
 import team.kavach.kanak.ui.popSlideFadeOut
@@ -92,7 +89,12 @@ fun MainScreen() {
                 popExitTransition = { popSlideFadeOut() }
             ) {
                 composable(Screen.Home.route) {
-                    HomeScreen(modifier = Modifier.padding(innerPadding), scrollState = homeScrollState, forecastViewModel)
+                    HomeScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        scrollState = homeScrollState,
+                        forecastViewModel,
+                        mainNavController
+                    )
                 }
                 composable (Screen.Alert.route) {
                     AlertScreen(alertScrollState, modifier = Modifier.padding(innerPadding))
@@ -109,6 +111,7 @@ fun MainScreen() {
                     Screen.Home.route -> homeScrollState
                     Screen.Alert.route -> alertScrollState
                     Screen.Weather.route -> weatherScrollState
+                    Screen.Farm.route -> farmScrollState
                     else -> rememberScrollState()
                 },
                 navController = mainNavController
@@ -121,7 +124,9 @@ fun MainScreen() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Box(
-        Modifier.background(Color(0xfffbf1c7)).fillMaxSize()
+        Modifier
+            .background(Color(0xfffbf1c7))
+            .fillMaxSize()
     )
 }
 
@@ -138,7 +143,9 @@ fun TopBar (){
 
         Row (
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.padding(horizontal = 20.dp).fillMaxWidth()
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth()
         ){
             Text("Kanak", fontFamily = DMSansFontFamily)
             Icon(Icons.Rounded.SupervisedUserCircle, null)

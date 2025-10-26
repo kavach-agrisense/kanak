@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import team.kavach.kanak.Prices.PriceCard
 import team.kavach.kanak.Scanner.ScannerCard
 import team.kavach.kanak.Weather.Forecast.ForecastViewModel
@@ -22,12 +24,16 @@ import team.kavach.kanak.Weather.TemperatureCard
 fun HomeScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
-    forecastViewModel: ForecastViewModel = viewModel()
+    forecastViewModel: ForecastViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
 ) {
     Column (
-        modifier.fillMaxSize().padding(horizontal = 10.dp).verticalScroll(scrollState),
+        modifier
+            .fillMaxSize()
+            .padding(horizontal = 10.dp)
+            .verticalScroll(scrollState),
     ) {
-        TemperatureCard(forecastViewModel)
+        TemperatureCard(forecastViewModel, navController)
         ScannerCard()
         PriceCard()
         Spacer(Modifier.height(100.dp))

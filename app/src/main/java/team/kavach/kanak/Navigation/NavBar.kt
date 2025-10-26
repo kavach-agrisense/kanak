@@ -26,8 +26,6 @@ import androidx.compose.material.icons.outlined.Agriculture
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.WbCloudy
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -54,7 +52,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import team.kavach.kanak.ui.theme.DMSansFontFamily
-import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable
 fun NavBar(
@@ -82,12 +79,12 @@ fun NavBar(
     )
 
 
-    var scrolledDown by remember { mutableStateOf(true) }
+    val scrolledDown = remember { mutableStateOf(true) }
     val lastScroll = remember { mutableIntStateOf(0) }
 
     LaunchedEffect(scrollState.value) {
         val current = scrollState.value
-        scrolledDown = if (current < 100) {
+        scrolledDown.value = if (current < 100) {
             false
         } else if (current < lastScroll.value) {
             false
@@ -98,7 +95,7 @@ fun NavBar(
     }
 
     val radius = animateFloatAsState(
-        if (scrolledDown) 0f else 100f,
+        if (scrolledDown.value) 0f else 100f,
         tween(250, 0, EaseOutCubic)
     )
     Column {
@@ -157,7 +154,7 @@ fun NavBar(
                     }
                 }
             }
-            SpecialButton({ }, !scrolledDown)
+            SpecialButton({ }, scrolledDown)
         }
         Box(
             Modifier

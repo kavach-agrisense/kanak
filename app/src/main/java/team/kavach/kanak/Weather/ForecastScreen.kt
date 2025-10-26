@@ -1,13 +1,10 @@
-package team.kavach.kanak.Weather.Forecast
+package team.kavach.kanak.Weather
 
 import androidx.compose.animation.core.EaseOut
-import androidx.compose.animation.core.EaseOutBack
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,20 +29,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.gson.Gson
-import team.kavach.kanak.Prices.PriceItem
 import team.kavach.kanak.Prices.Separator
-import team.kavach.kanak.Prices.UnitKnob
+import team.kavach.kanak.Weather.Forecast.ForecastInfo
+import team.kavach.kanak.Weather.Forecast.ForecastViewModel
+import team.kavach.kanak.Weather.Forecast.Forecastday
+import team.kavach.kanak.Weather.Forecast.Hour
 import team.kavach.kanak.ui.theme.DMSansFontFamily
-import team.kavach.kanak.ui.theme.inverseVerticalGradientBrush
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 import java.time.Instant
 import java.time.ZoneId
@@ -66,7 +62,8 @@ fun ForecastScreen(modifier: Modifier, scrollState: ScrollState, viewModel: Fore
         modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(horizontal = 10.dp).padding(bottom = 100.dp)
+            .padding(horizontal = 10.dp)
+            .padding(bottom = 100.dp)
     ){
         when {
             forecastInfo == null -> {
@@ -227,6 +224,7 @@ fun HourRow (forecastInfo: ForecastInfo, modifier : Modifier = Modifier) {
                     HourChart(forecastInfo.forecast.forecastday[0].hour[hour])
                 }
             }
+        Spacer(Modifier.width(20.dp))
     }
     Spacer(Modifier.width(20.dp))
 }

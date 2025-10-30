@@ -34,6 +34,7 @@ class ForecastViewModel : ViewModel() {
         }
     }
 
+
 }
 
 @Composable

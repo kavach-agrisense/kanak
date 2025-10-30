@@ -29,6 +29,8 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = Color.hsl(160f, 0.4f, 0.8f),
+    secondary = Color.hsl(160f, 0.2f, 0.3f),
+    tertiary = Color.hsl(160f, 0.6f, 0.55f),
     /*secondary = Color(0xff286983),
     tertiary = Color(0xff907aa9),
     surface = Color(0xfffaf4ed),

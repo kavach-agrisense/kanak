@@ -46,7 +46,7 @@ android {
 
         debug {
             buildConfigField("String", "WEATHER_API_KEY", "${localProperties["WEATHER_API_KEY"]}")
-        }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -100,10 +100,15 @@ dependencies {
 
     // Nav compose
     implementation(libs.androidx.navigation.compose)
-    debugImplementation(libs.androidx.ui.tooling)
 
+
+    // Coil compose
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
+    implementation(libs.coil.network.okhttp)
 
     // Room DB
     // implementation(libs.androidx.room.compiler)
     // Annotation for Room
+}
 }

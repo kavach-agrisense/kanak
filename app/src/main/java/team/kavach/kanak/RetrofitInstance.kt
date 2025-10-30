@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
 
     private fun getInstance() : Retrofit {
-        return Retrofit.Builder().baseUrl("https://api.weatherapi.com/v1/")
+        return Retrofit.Builder().baseUrl("https://weather.googleapis.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

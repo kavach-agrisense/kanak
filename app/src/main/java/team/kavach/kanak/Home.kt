@@ -17,14 +17,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import team.kavach.kanak.Prices.PriceCard
 import team.kavach.kanak.Scanner.ScannerCard
-import team.kavach.kanak.Weather.Forecast.ForecastViewModel
 import team.kavach.kanak.Weather.TemperatureCard
+import team.kavach.kanak.Weather.WeatherViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
-    forecastViewModel: ForecastViewModel = viewModel(),
+    weatherInfoViewModel: WeatherViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
     Column (
@@ -33,7 +33,7 @@ fun HomeScreen(
             .padding(horizontal = 10.dp)
             .verticalScroll(scrollState),
     ) {
-        TemperatureCard(forecastViewModel, navController)
+        TemperatureCard(weatherInfoViewModel, navController)
         ScannerCard()
         PriceCard()
         Spacer(Modifier.height(100.dp))

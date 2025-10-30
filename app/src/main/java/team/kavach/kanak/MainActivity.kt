@@ -34,6 +34,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import team.kavach.kanak.Navigation.NavBar
 import team.kavach.kanak.Navigation.Screen
+import team.kavach.kanak.Weather.fetchAndReturnWeatherViewModel
 import team.kavach.kanak.Weather.ForecastScreen
 import team.kavach.kanak.Weather.Forecast.fetchAndReturnForecastViewModel
 import team.kavach.kanak.ui.popSlideFadeIn
@@ -67,7 +68,7 @@ fun MainScreen() {
 
     val navBackStackEntry by mainNavController.currentBackStackEntryAsState();
 
-    val forecastViewModel = fetchAndReturnForecastViewModel();
+    val forecastViewModel = fetchAndReturnWeatherViewModel();
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -92,7 +93,7 @@ fun MainScreen() {
                     HomeScreen(
                         modifier = Modifier.padding(innerPadding),
                         scrollState = homeScrollState,
-                        forecastViewModel,
+                        fetchAndReturnWeatherViewModel(),
                         mainNavController
                     )
                 }
@@ -100,7 +101,7 @@ fun MainScreen() {
                     AlertScreen(alertScrollState, modifier = Modifier.padding(innerPadding))
                 }
                 composable (Screen.Weather.route) {
-                    ForecastScreen(Modifier.padding(innerPadding), weatherScrollState, forecastViewModel,)
+                    ForecastScreen(Modifier.padding(innerPadding), weatherScrollState, forecastViewModel)
                 }
                 composable (Screen.Farm.route) {
                     FarmScreen(modifier = Modifier.padding(innerPadding), farmScrollState)

@@ -1,7 +1,9 @@
 package team.kavach.kanak.Weather
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +26,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,23 +39,33 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.svg.SvgDecoder
 import team.kavach.kanak.Navigation.Screen
-import team.kavach.kanak.Weather.Forecast.ForecastInfo
-import team.kavach.kanak.Weather.Forecast.ForecastViewModel
+import team.kavach.kanak.R
+import team.kavach.kanak.Weather.CurrentModel.WeatherCondition
+import team.kavach.kanak.Weather.CurrentModel.WeatherInfo
 import team.kavach.kanak.ui.theme.verticalGradientBrush
 
 @Composable
-fun WeatherRow(viewModel : ForecastViewModel) {
+fun WeatherRow(viewModel: WeatherViewModel) {
     val componentList = listOf(TemperatureCard(viewModel), )
 }
 
 @Composable
-fun TemperatureCard(viewModel : ForecastViewModel = viewModel(), navController: NavController = rememberNavController()) {
+fun TemperatureCard(
+    viewModel: WeatherViewModel = viewModel(),
+    navController: NavController = rememberNavController()
+) {
 
-    val weatherInfo = viewModel.forecastInfo.value;
+    val weatherInfo = viewModel.weatherInfo.value
 
     Card (
-        modifier = Modifier.height(270.dp).fillMaxWidth().padding(5.dp, 10.dp),
+        modifier = Modifier
+            .height(270.dp)
+            .fillMaxWidth()
+            .padding(5.dp, 10.dp),
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -80,7 +94,9 @@ fun TemperatureCard(viewModel : ForecastViewModel = viewModel(), navController: 
 fun FetchingWeather () {
 
     Row(
-        Modifier.fillMaxSize().padding(20.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(20.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -91,43 +107,45 @@ fun FetchingWeather () {
 }
 
 @Composable
-fun FetchedWeatherInfo(weatherInfo: ForecastInfo) {
+fun FetchedWeatherInfo(weatherInfo: WeatherInfo) {
     val icons = listOf(Icons.Rounded.WaterDrop, Icons.Rounded.Air, Icons.Rounded.Thunderstorm);
     val entities = listOf("Humidity", "Wind", "Precipitation");
     val values = listOf(
-        "${weatherInfo.current.humidity}%",
-        "${weatherInfo.current.wind_kph} km/h",
-        "${weatherInfo.current.precip_mm} mm",
+        "${weatherInfo.relativeHumidity}%",
+        "${weatherInfo.wind.speed.value} km/h",
+        "${weatherInfo.precipitation.probability.percent}%",
     );
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().padding(20.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Row (
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().padding(20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
             ){
             Column {
-                Text(
-                    weatherInfo.location.name,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    )
-                Text(weatherInfo.location.region)
+
             }
-            Row () {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
-                    painter = painterResource(weatherInfo.icon()),
+                    painter = painterResource(weatherInfo.getWeatherIcon()),
                     null,
-                    modifier = Modifier.size(50.dp)
+                    modifier = Modifier.size(60.dp)
                 )
+                // ConditionIcon(weatherInfo.weatherCondition, modifier = Modifier.size(70.dp))
                 Spacer(Modifier.width(20.dp))
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(
-                        "${weatherInfo.current.temp_c}°C",
+                        "${weatherInfo.temperature.degrees}°C",
                         fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold,
                         softWrap = false,
@@ -135,7 +153,7 @@ fun FetchedWeatherInfo(weatherInfo: ForecastInfo) {
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        weatherInfo.current.condition.text,
+                        weatherInfo.weatherCondition.description.text,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -174,18 +192,46 @@ fun FetchedWeatherInfo(weatherInfo: ForecastInfo) {
     }
 }
 
+@Composable
+fun ConditionIcon(condition: WeatherCondition, modifier: Modifier = Modifier) {
+
+    val context = LocalContext.current
+    val imageLoader = remember {
+        ImageLoader.Builder(context).components {
+            add(SvgDecoder.Factory())
+        }.build()
+    }
+    AsyncImage(
+        model = if (isSystemInDarkTheme()) "${condition.iconBaseUri}_dark.svg" else "${condition.iconBaseUri}.svg",
+        contentDescription = condition.description.text,
+        imageLoader = imageLoader,
+        modifier = modifier,
+        placeholder = painterResource(R.drawable.cloud),
+        onError = { it ->
+            Log.e("ConditionIcon", "Error Loading Icon ${it.result}")
+        },
+        onSuccess = {
+            Log.d("ConditionIcon", "Success!!")
+        }
+    )
+}
+
 @Preview
 @Composable
 fun PreviewWeatherFetch() {
     Column() {
         Card(
-            modifier = Modifier.height(100.dp).width(250.dp),
+            modifier = Modifier
+                .height(100.dp)
+                .width(250.dp),
             shape = RoundedCornerShape(50.dp)
         ) {
             FetchingWeather()
         }
         Card(
-            modifier = Modifier.height(100.dp).width(250.dp),
+            modifier = Modifier
+                .height(100.dp)
+                .width(250.dp),
             shape = RoundedCornerShape(50.dp)
         ) {
 

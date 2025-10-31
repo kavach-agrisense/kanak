@@ -2,6 +2,7 @@ package team.kavach.kanak.ui
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.EaseInBack
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.EaseOut
@@ -18,6 +19,10 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.interaction.HoverInteraction
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.ui.graphics.Color
 
 
 val commonEasing : Easing = EaseOutCubic;
@@ -90,4 +95,14 @@ fun popSlideFadeOutVertically() : ExitTransition {
     ) + fadeOut(
         tween (fadingTime/2)
     )
+}
+
+@Composable
+fun animatedToggleIconColor (enabled : Boolean) : State<Color> {
+    return animateColorAsState(
+        if (enabled) {
+            MaterialTheme.colorScheme.onBackground
+        } else {
+            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+        })
 }

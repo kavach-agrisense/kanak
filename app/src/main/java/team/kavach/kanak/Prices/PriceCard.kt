@@ -51,6 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import team.kavach.kanak.ui.animatedToggleIconColor
 import team.kavach.kanak.ui.theme.DMSansFontFamily
 import team.kavach.kanak.ui.theme.inverseVerticalGradientBrush
 import team.kavach.kanak.ui.theme.verticalGradientBrush
@@ -222,14 +223,14 @@ fun UnitKnob (onClick : (inQuintal : Boolean) -> Unit = {}) {
                 "Kg",
                 fontSize = 18.sp,
                 fontFamily = DMSansFontFamily,
-                color = MaterialTheme.colorScheme.onSurface
+                color = animatedToggleIconColor(!quintalActive).value
             )
             Spacer(Modifier.width(25.dp))
             Text(
                 "Quintal",
                 fontSize = 18.sp,
                 fontFamily = DMSansFontFamily,
-                color = MaterialTheme.colorScheme.onSurface
+                color = animatedToggleIconColor(quintalActive).value
             )
         }
     }

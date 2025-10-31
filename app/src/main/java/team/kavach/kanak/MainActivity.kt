@@ -82,7 +82,7 @@ fun MainScreen() {
             contentAlignment = Alignment.BottomCenter
         ) {
             NavHost(
-                mainNavController, startDestination = Screen.Weather.route,
+                mainNavController, startDestination = Screen.Home.route,
                 enterTransition = { slideFadeIn() },
                 exitTransition = { slideFadeOut() },
                 popEnterTransition = { popSlideFadeIn() },

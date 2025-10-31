@@ -3,23 +3,10 @@ package team.kavach.kanak
 import retrofit2.http.GET
 import retrofit2.http.Query
 import team.kavach.kanak.Weather.CurrentModel.WeatherInfo
-import team.kavach.kanak.Weather.Forecast.ForecastInfo
+import team.kavach.kanak.Weather.DailyModel.DailyForecastInfo
 import team.kavach.kanak.Weather.HourlyModel.HourlyForecast
 
 interface ApiService {
-
-
-    @GET("forecast.json")
-    suspend fun fetchWeatherForecast(
-        @Query("key")
-        apiKey : String,
-
-        @Query("q")
-        location : String,
-
-        @Query("days")
-        days : Int
-    ) : ForecastInfo
 
     @GET("v1/currentConditions:lookup")
     suspend fun fetchCurrentWeather(
@@ -48,4 +35,23 @@ interface ApiService {
         @Query("location.longitude")
         longitude : Double
     ) : HourlyForecast
+
+
+    @GET("v1/forecast/days:lookup")
+    suspend fun fetchDailyForecast(
+        @Query("key")
+        apiKey : String,
+
+        @Query("location.latitude")
+        latitude : Double,
+
+        @Query("location.longitude")
+        longitude : Double,
+
+        @Query("days")
+        days : UInt,
+
+        @Query("fields")
+        fields : String
+    ) : DailyForecastInfo
 }

@@ -103,7 +103,7 @@ fun Separator() {
     val color = if (isSystemInDarkTheme()) {
         Color.hsl(160f, 0.2f, 0.0f)
     } else {
-        Color.hsl(160f, 0.2f, 0.5f)
+        Color.hsl(160f, 0.2f, 0.8f)
     }
     Box(Modifier
         .height(8.dp)
@@ -113,7 +113,7 @@ fun Separator() {
         .innerShadow(
             shape,
             shadow = Shadow(
-                4.dp,
+                5.dp,
                 color,
                 0.dp,
                 DpOffset(0.dp, 0.5.dp)

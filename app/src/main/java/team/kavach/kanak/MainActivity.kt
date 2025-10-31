@@ -36,7 +36,6 @@ import team.kavach.kanak.Navigation.NavBar
 import team.kavach.kanak.Navigation.Screen
 import team.kavach.kanak.Weather.fetchAndReturnWeatherViewModel
 import team.kavach.kanak.Weather.ForecastScreen
-import team.kavach.kanak.Weather.Forecast.fetchAndReturnForecastViewModel
 import team.kavach.kanak.ui.popSlideFadeIn
 import team.kavach.kanak.ui.popSlideFadeOut
 import team.kavach.kanak.ui.slideFadeIn
@@ -83,7 +82,7 @@ fun MainScreen() {
             contentAlignment = Alignment.BottomCenter
         ) {
             NavHost(
-                mainNavController, startDestination = Screen.Home.route,
+                mainNavController, startDestination = Screen.Weather.route,
                 enterTransition = { slideFadeIn() },
                 exitTransition = { slideFadeOut() },
                 popEnterTransition = { popSlideFadeIn() },

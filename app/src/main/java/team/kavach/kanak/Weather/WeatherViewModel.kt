@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import team.kavach.kanak.BuildConfig
 import team.kavach.kanak.RetrofitInstance
 import team.kavach.kanak.Weather.CurrentModel.WeatherInfo
+import team.kavach.kanak.Weather.DailyModel.DailyForecastInfo
 import team.kavach.kanak.Weather.HourlyModel.HourlyForecast
 
 
@@ -29,8 +30,9 @@ class WeatherViewModel : ViewModel() {
     val hourlyForecastisLoading = mutableStateOf(true)
 
 
-
-
+    private val _dailyForecastInfo = mutableStateOf<DailyForecastInfo?>(null)
+    val dailyForecastInfo : State<DailyForecastInfo?> = _dailyForecastInfo
+    val dailyForecastIsLoading = mutableStateOf(true)
 
     fun fetchCurrentWeather() {
         viewModelScope.launch {
@@ -69,6 +71,27 @@ class WeatherViewModel : ViewModel() {
     }
 
 
+    fun fetchDailyForecast() {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitInstance.getApiService()
+                    .fetchDailyForecast(
+                        BuildConfig.WEATHER_API_KEY,
+                        exampleLatitude,
+                        exampleLongitude,
+                        7u,
+                        "forecastDays(displayDate,daytimeForecast(weatherCondition.iconBaseUri,relativeHumidity,precipitation.probability.percent),nighttimeForecast(weatherCondition.iconBaseUri,relativeHumidity,precipitation.probability.percent),maxTemperature.degrees,minTemperature.degrees)"
+                    )
+                _dailyForecastInfo.value = response
+                dailyForecastIsLoading.value = false
+            } catch (e : Exception) {
+                Log.e("DAILY FORECAST", "${e.message}")
+                e.printStackTrace()
+            }
+        }
+    }
+
+
 
 }
 
@@ -77,12 +100,9 @@ fun fetchAndReturnWeatherViewModel() : WeatherViewModel {
     val viewModel : WeatherViewModel = viewModel();
 
     LaunchedEffect(Unit) {
-        launch {
-            viewModel.fetchCurrentWeather()
-        }
-        launch {
-            viewModel.fetchHourlyForecast()
-        }
+        launch { viewModel.fetchCurrentWeather() }
+        launch { viewModel.fetchHourlyForecast() }
+        launch { viewModel.fetchDailyForecast() }
     }
 
     return viewModel

@@ -19,7 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class team.kavach.kanak.Weather.Forecast.** { *; }
 -keep class team.kavach.kanak.Weather.CurrentModel.** { *; }
 -keep class team.kavach.kanak.Weather.HourlyModel.** { *; }
+-keep class team.kavach.kanak.Weather.DailyModel.** { *; }
 -keepattributes Signature

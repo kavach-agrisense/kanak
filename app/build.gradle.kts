@@ -110,5 +110,8 @@ dependencies {
     // Room DB
     // implementation(libs.androidx.room.compiler)
     // Annotation for Room
+
+    // Runtime Permissions handling
+    implementation(libs.accompanist.permissions)
 }
 }
